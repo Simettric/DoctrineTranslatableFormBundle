@@ -9,8 +9,6 @@ namespace Simettric\DoctrineTranslatableFormBundle\Form;
 
 
 
-use Simettric\DoctrineTranslatableFormBundle\EventSubscriber\EntityPropertyFormSubscriber;
-use Simettric\DoctrineTranslatableFormBundle\Interfaces\TranslatableFieldInterface;
 
 use Symfony\Component\Form\Exception;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -37,11 +35,7 @@ abstract class AbstractTranslatableType extends \Symfony\Component\Form\Abstract
 
     private $locales=[];
 
-
-
-    private $property_names=[];
-
-    private $required_locale="en";
+    private $required_locale;
 
     /**
      * @var DataMapperInterface
@@ -62,65 +56,38 @@ abstract class AbstractTranslatableType extends \Symfony\Component\Form\Abstract
         $this->locales = $locales;
     }
 
-    public function setPropertyNames(array $property_names){
-        $this->property_names = $property_names;
-    }
 
     /**
-     * @param FormBuilderInterface $builder
+     * @param FormBuilderInterface $builderInterface
      * @param array $options
-     * @throws \Exception
+     * @return DataMapperInterface
      */
-    protected function transformTranslatableFields(FormBuilderInterface $builder, array $options)
-    {
-
-        foreach($options["property_names"] as $name){
-
-            $field = $builder->get($name);
-
-            if(!$field->getType()->getInnerType() instanceof TranslatableFieldInterface)
-                throw new \Exception("{$name} must implement TranslatableFieldInterface");
-
-
-            $this->mapper->setLocales($options["locales"]);
-            $this->mapper->setPropertyNames($options["property_names"]);
-            $builder->setDataMapper($this->mapper);
-
-
-            foreach($options["locales"] as $iso){
-
-
-                $options = ["label"=>$iso];
-                if($iso == $this->required_locale){
-                    $options = ["required"=>true];
-                }
-
-
-                $field->add($iso, get_class($field->getType()->getParent()->getInnerType()), $options);
-
-            }
+    protected function createTranslatableMapper(FormBuilderInterface $builderInterface, array $options){
 
 
 
+        $this->mapper->setBuilder($builderInterface, $options);
+        $this->mapper->setLocales($options["locales"]);
+        $this->mapper->setRequiredLocale($options["required_locale"]);
+        $builderInterface->setDataMapper($this->mapper);
 
-        }
-
+        return $this->mapper;
     }
+
+
+
 
     protected function configureTranslationOptions(OptionsResolver $resolver)
     {
 
 
-        $resolver->setRequired(["property_names", "locales", "required_locale"]);
+        $resolver->setRequired(["locales", "required_locale"]);
 
         $data = [
             'locales'         => $this->locales?:["en"],
             "required_locale" => $this->required_locale?:"en",
         ];
 
-        if($this->property_names){
-            $data["property_names"] = $this->property_names;
-        }
 
         $resolver->setDefaults($data);
     }
