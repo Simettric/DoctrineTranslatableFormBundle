@@ -89,7 +89,7 @@ class CategoryType extends AbstractTranslatableType
         // you can add the translatable fields
         $this->createTranslatableMapper($builder, $options)
              ->add("name", TranslatableTextType::class)
-             ->add("another translatable field", TranslatableTextType::class)
+             ->add("some other translatable field", TranslatableTextType::class)
         ;
 
         // and then you can add the rest of the fields using the standard way
@@ -134,4 +134,4 @@ Then you need to declare your form type as a service
             tags:
                 - { name: form.type }
                 
-And this is all :beer:
+And this is it :beer:
