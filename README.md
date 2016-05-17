@@ -134,4 +134,5 @@ Then you need to declare your form type as a service
             tags:
                 - { name: form.type }
                 
+
 And this is it :beer:
