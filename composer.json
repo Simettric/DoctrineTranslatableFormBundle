@@ -1,0 +1,20 @@
+{
+    "name": "simettric/doctrine-translatable-form-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Asier Marqués",
+            "email": "asiermarques@gmail.com"
+        }
+    ],
+    "type": "symfony-bundle",
+    "autoload": {
+        "psr-4": {
+            "Simettric\\DoctrineTranslatableFormBundle\\": ""
+        }
+    },
+    "require": {
+        "php": ">=5.5.9",
+        "symfony/symfony": "3.0.*"
+    }
+}
