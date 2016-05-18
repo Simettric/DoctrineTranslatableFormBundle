@@ -11,10 +11,10 @@ namespace Simettric\DoctrineTranslatableFormBundle\Form;
 use Simettric\DoctrineTranslatableFormBundle\Interfaces\TranslatableFieldInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TranslatableTextType extends AbstractType
+class TranslatableTextareaType extends AbstractType
     implements TranslatableFieldInterface{
 
 
@@ -31,7 +31,7 @@ class TranslatableTextType extends AbstractType
 
     public function getParent()
     {
-        return TextType::class;
+        return TextareaType::class;
     }
 
 
