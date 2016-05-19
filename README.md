@@ -134,5 +134,25 @@ Then you need to declare your form type as a service
             tags:
                 - { name: form.type }
                 
+                
+And now you can work in your controller as if you worked with normal entities 
 
-And this is it :beer:
+    $category = new Category();
+    
+    $form = $this->createForm(CategoryType::class, $category);
+    
+    if($request->getMethod() == "POST"){
+    
+        $form->handleRequest($request);
+        
+        if($form->isValid()){
+        
+            $em = $this->getDoctrine()->getManager();
+            
+            $em->persist($category);
+            $em->flush();
+        
+        }
+    }
+    
+
