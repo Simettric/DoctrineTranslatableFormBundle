@@ -84,6 +84,8 @@ class DataMapper implements DataMapperInterface{
     /**
      * @param $name
      * @param $type
+     * @param array $options
+     * @return DataMapper
      * @throws \Exception
      */
     public function add($name, $type, $options=[])
@@ -108,6 +110,8 @@ class DataMapper implements DataMapperInterface{
             $field->add($iso, get_class($field->getType()->getParent()->getInnerType()), $options);
 
         }
+
+        return $this;
 
     }
 
