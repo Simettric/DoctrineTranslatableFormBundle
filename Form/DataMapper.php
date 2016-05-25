@@ -145,6 +145,10 @@ class DataMapper implements DataMapperInterface{
 
             }else{
 
+                if(false === $form->getConfig()->getOption("mapped")){
+                    continue;
+                }
+
                 $accessor = PropertyAccess::createPropertyAccessor();
                 $form->setData($accessor->getValue($data, $form->getName()));
 
@@ -187,6 +191,10 @@ class DataMapper implements DataMapperInterface{
 
 
             }else{
+
+                if(false === $form->getConfig()->getOption("mapped")){
+                    continue;
+                }
 
                 $accessor = PropertyAccess::createPropertyAccessor();
                 $accessor->setValue($entityInstance, $form->getName(), $form->getData());
