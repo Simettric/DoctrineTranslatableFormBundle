@@ -63,6 +63,21 @@ You must to activate the persist_default_translation key in your stof_doctrine_e
                 translatable: true
                 
                 
+Configure the view
+===================
+
+This bundle implements the **Bootstrap Tabs component** in order to show the different locale inputs for each field. 
+
+If you want to use it, just add the template in the form_themes section in your Twig configuration. 
+Obviously, the bootstrap assets must be loaded in your layout.
+
+    # app/config/config.yml
+    twig:
+        ...
+        form_themes:
+            - 'SimettricDoctrineTranslatableFormBundle:Form:fields.html.twig'
+                
+                
 Creating your forms
 ===================
 
@@ -89,7 +104,7 @@ class CategoryType extends AbstractTranslatableType
         // you can add the translatable fields
         $this->createTranslatableMapper($builder, $options)
              ->add("name", TranslatableTextType::class)
-             ->add("some other translatable field", TranslatableTextType::class)
+             ->add("description", TranslatableTextareaType::class)
         ;
 
         // and then you can add the rest of the fields using the standard way
@@ -156,3 +171,15 @@ And now you can work in your controller as if you worked with normal entities
     }
     
 
+If you have configured the Bootstrap Tabs theme in your Twig configuration, you can show your fields in the templates with the form_row tag
+
+    <div class="form-group">
+        {{ form_row(form.name, {label: "name"|trans}) }}
+    </div>
+    
+    <div class="form-group">
+        {{ form_row(form.description, {label: "description"|trans}) }}
+    </div>
+
+
+            
