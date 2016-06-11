@@ -171,7 +171,7 @@ And now you can work in your controller as if you worked with normal entities
     }
     
 
-If you have configured the Bootstrap Tabs theme in your Twig configuration, you can show your fields in the templates with the form_row tag
+If you have configured the Bootstrap Tabs theme in your Twig configuration, you can show your fields with the Boo in the templates with the form_row tag
 
     <div class="form-group">
         {{ form_row(form.name, {label: "name"|trans}) }}
