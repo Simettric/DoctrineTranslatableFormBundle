@@ -145,7 +145,7 @@ class DataMapper implements DataMapperInterface{
 
             }else{
 
-                if(false === $form->getConfig()->getOption("mapped")){
+                if(false === $form->getConfig()->getOption("mapped") || null === $form->getConfig()->getOption("mapped")){
                     continue;
                 }
 
