@@ -136,7 +136,7 @@ class DataMapper implements DataMapperInterface{
                 $values = [];
                 foreach($this->getLocales() as $iso){
 
-                    if(isset($translations[$iso])){
+                    if(isset($translations[$iso]) && isset($translations[$iso][$form->getName()])){
                         $values[$iso] =  $translations[$iso][$form->getName()];
                     }
 
