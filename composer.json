@@ -1,5 +1,5 @@
 {
-    "name": "simettric/doctrine-translatable-form-bundle",
+    "name": "pluetzner/doctrine-translatable-form-bundle",
     "license": "MIT",
     "authors": [
         {
@@ -15,7 +15,7 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "~3.0",
+        "symfony/symfony": "2.8.*",
         "stof/doctrine-extensions-bundle": "^1.2"
     }
 }
