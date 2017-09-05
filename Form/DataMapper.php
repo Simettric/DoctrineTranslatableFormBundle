@@ -126,16 +126,13 @@ class DataMapper implements DataMapperInterface{
      */
     public function mapDataToForms($data, $forms)
     {
-
         foreach($forms as $form){
-
+            $this->translations = [];
             $translations = $this->getTranslations($data);
 
             if(false !== in_array($form->getName(), $this->property_names)) {
-
                 $values = [];
                 foreach($this->getLocales() as $iso){
-
                     if(isset($translations[$iso])){
                         $values[$iso] =  $translations[$iso][$form->getName()];
                     }
