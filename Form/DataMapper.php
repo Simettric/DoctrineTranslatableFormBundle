@@ -126,36 +126,24 @@ class DataMapper implements DataMapperInterface{
      */
     public function mapDataToForms($data, $forms)
     {
-
-        foreach($forms as $form){
-
+        foreach($forms as $form) {
             $translations = $this->getTranslations($data);
-
-            if(false !== in_array($form->getName(), $this->property_names)) {
-
+            if (false !== in_array($form->getName(), $this->property_names)) {
                 $values = [];
                 foreach($this->getLocales() as $iso){
-
-                    if(isset($translations[$iso]) && isset($translations[$iso][$form->getName()])){
-                        $values[$iso] =  $translations[$iso][$form->getName()];
+                    if (isset($translations[$iso]) && isset($translations[$iso][$form->getName()])) {
+                        $values[$iso] = $translations[$iso][$form->getName()];
                     }
-
                 }
                 $form->setData($values);
-
-            }else{
-
-                if(false === $form->getConfig()->getOption("mapped") || null === $form->getConfig()->getOption("mapped")){
+            } else {
+                if (false === $form->getConfig()->getOption("mapped") || null === $form->getConfig()->getOption("mapped")) {
                     continue;
                 }
-
                 $accessor = PropertyAccess::createPropertyAccessor();
                 $form->setData($accessor->getValue($data, $form->getName()));
-
             }
-
         }
-
     }
 
     /**
