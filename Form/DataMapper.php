@@ -9,6 +9,7 @@ namespace Simettric\DoctrineTranslatableFormBundle\Form;
 
 
 use Doctrine\ORM\EntityManager;
+use Gedmo\Translatable\TranslatableListener;
 use Simettric\DoctrineTranslatableFormBundle\Interfaces\TranslatableFieldInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
