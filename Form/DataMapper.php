@@ -168,24 +168,32 @@ class DataMapper implements DataMapperInterface{
      */
     public function mapFormsToData($forms, &$data)
     {
-
-
         /**
          * @var $form FormInterface
          */
         foreach ($forms as $form) {
-
 
             $entityInstance = $data;
 
 
             if(false !== in_array($form->getName(), $this->property_names)) {
 
+                $meta = $this->em->getClassMetadata(get_class($entityInstance));
+                $listener = new TranslatableListener();
+                $listener->loadMetadataForObjectClass($this->em, $meta);
+                $config = $listener->getConfiguration($this->em, $meta->name);
 
                 $translations = $form->getData();
                 foreach($this->getLocales() as $iso) {
                     if(isset($translations[$iso])){
-                        $this->repository->translate($entityInstance, $form->getName(), $iso, $translations[$iso] );
+                        if (isset($config['translationClass'])) {
+                            $t = $this->em->getRepository($config['translationClass'])
+                                ->translate($entityInstance, $form->getName(), $iso, $translations[$iso]);
+                            $this->em->persist($entityInstance);
+                            $this->em->flush();
+                        } else {
+                            $this->repository->translate($entityInstance, $form->getName(), $iso, $translations[$iso] );
+                        }
                     }
                 }
 
