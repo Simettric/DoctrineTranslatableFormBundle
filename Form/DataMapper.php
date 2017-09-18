@@ -47,10 +47,14 @@ class DataMapper implements DataMapperInterface{
 
 
 
-    public function __construct(EntityManager $entityManager){
+    public function __construct(EntityManager $entityManager, TranslationRepository $repository=null){
 
         $this->em = $entityManager;
-        $this->repository = $this->em->getRepository('Gedmo\Translatable\Entity\Translation');
+
+        if(!$repository)
+            $repository = 'Gedmo\Translatable\Entity\Translation';
+
+        $this->repository = $this->em->getRepository($repository);
 
     }
 

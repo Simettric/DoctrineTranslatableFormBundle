@@ -170,6 +170,24 @@ And now you can work in your controller as if you worked with normal entities
         }
     }
     
+    
+You can set your own Repository defining a new custom mapping service. 
+This is useful for instance when you have a [Personal Translation](https://github.com/Atlantic18/DoctrineExtensions/blob/v2.4.x/doc/translatable.md#personal-translations) mapping configuration using a specific translation repository
+ 
+    services:
+        app.my_custom_mapper:
+            class:     Simettric\DoctrineTranslatableFormBundle\Form\DataMapper
+            arguments: ["@doctrine.orm.entity_manager", "AppBundle\Repository\PostTranslationRepository"]
+            
+        app.form.post_type:
+            class: AppBundle\Form\PostType
+            arguments: ["@app.my_custom_mapper"]
+            calls:
+                - [ setRequiredLocale, [%locale%] ]
+                - [ setLocales, [%locales%] ]
+            tags:
+                - { name: form.type }
+    
 
 If you have configured the Bootstrap Tabs theme in your Twig configuration, you can show your fields with the Boo in the templates with the form_row tag
 

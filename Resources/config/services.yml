@@ -1,6 +1,4 @@
 services:
-
-
     sim_trans_form.mapper:
         class:     Simettric\DoctrineTranslatableFormBundle\Form\DataMapper
         arguments: ["@doctrine.orm.entity_manager"]
