@@ -9,6 +9,7 @@ namespace Simettric\DoctrineTranslatableFormBundle\Form;
 
 
 use Doctrine\ORM\EntityManager;
+use Gedmo\Translatable\TranslatableListener;
 use Simettric\DoctrineTranslatableFormBundle\Interfaces\TranslatableFieldInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -126,35 +127,26 @@ class DataMapper implements DataMapperInterface{
      */
     public function mapDataToForms($data, $forms)
     {
-
-        foreach($forms as $form){
-
+        foreach($forms as $form) {
             $translations = $this->getTranslations($data);
-
-            if(false !== in_array($form->getName(), $this->property_names)) {
-
+            if (false !== in_array($form->getName(), $this->property_names)) {
                 $values = [];
                 foreach($this->getLocales() as $iso){
+
                     if(isset($translations[$iso])){
                         $values[$iso] =  isset($translations[$iso][$form->getName()]) ? $translations[$iso][$form->getName()] : "";
-                    }
 
+                    }
                 }
                 $form->setData($values);
-
-            }else{
-
-                if(false === $form->getConfig()->getOption("mapped") || null === $form->getConfig()->getOption("mapped")){
+            } else {
+                if (false === $form->getConfig()->getOption("mapped") || null === $form->getConfig()->getOption("mapped")) {
                     continue;
                 }
-
                 $accessor = PropertyAccess::createPropertyAccessor();
                 $form->setData($accessor->getValue($data, $form->getName()));
-
             }
-
         }
-
     }
 
     /**
@@ -167,24 +159,32 @@ class DataMapper implements DataMapperInterface{
      */
     public function mapFormsToData($forms, &$data)
     {
-
-
         /**
          * @var $form FormInterface
          */
         foreach ($forms as $form) {
-
 
             $entityInstance = $data;
 
 
             if(false !== in_array($form->getName(), $this->property_names)) {
 
+                $meta = $this->em->getClassMetadata(get_class($entityInstance));
+                $listener = new TranslatableListener();
+                $listener->loadMetadataForObjectClass($this->em, $meta);
+                $config = $listener->getConfiguration($this->em, $meta->name);
 
                 $translations = $form->getData();
                 foreach($this->getLocales() as $iso) {
                     if(isset($translations[$iso])){
-                        $this->repository->translate($entityInstance, $form->getName(), $iso, $translations[$iso] );
+                        if (isset($config['translationClass'])) {
+                            $t = $this->em->getRepository($config['translationClass'])
+                                ->translate($entityInstance, $form->getName(), $iso, $translations[$iso]);
+                            $this->em->persist($entityInstance);
+                            $this->em->flush();
+                        } else {
+                            $this->repository->translate($entityInstance, $form->getName(), $iso, $translations[$iso] );
+                        }
                     }
                 }
 
