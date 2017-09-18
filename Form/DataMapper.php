@@ -109,6 +109,7 @@ class DataMapper implements DataMapperInterface{
 
             $options = [
                 "label"   => $iso,
+                "attr"    => isset($options["attr"]) ? $options["attr"] : [],
                 "required"=> ($iso == $this->required_locale && (!isset($options["required"]) || $options["required"] ))
             ];
 

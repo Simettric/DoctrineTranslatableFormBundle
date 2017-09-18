@@ -16,7 +16,7 @@
     <div class="tab-content" style="margin-top: 10px">
     {% for locale,child in form %}
         <div role="tabpanel" class="tab-pane {{ locale == app.request.locale?"active":"" }}" id="trans-field-{{ form.vars.name }}-{{ locale }}">
-            {{ form_widget(child) }}
+            {{ form_widget(child, {attr: form.vars.attr}) }}
         </div>
     {% endfor %}
     </div>

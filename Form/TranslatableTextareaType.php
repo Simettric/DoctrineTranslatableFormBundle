@@ -27,6 +27,7 @@ class TranslatableTextareaType extends AbstractType
         $resolver->setRequired(["compound"]);
         $resolver->setAllowedValues("compound", true);
 
+
     }
 
     public function getParent()
