@@ -105,7 +105,7 @@ class DataMapper implements DataMapperInterface{
 
             $options = [
                 "label"   => $iso,
-                "required"=> $iso == $this->required_locale
+                "required"=> ($iso == $this->required_locale && (!isset($options["required"]) || $options["required"] ))
             ];
 
             $field->add($iso, get_class($field->getType()->getParent()->getInnerType()), $options);
@@ -132,8 +132,10 @@ class DataMapper implements DataMapperInterface{
             if (false !== in_array($form->getName(), $this->property_names)) {
                 $values = [];
                 foreach($this->getLocales() as $iso){
-                    if (isset($translations[$iso]) && isset($translations[$iso][$form->getName()])) {
-                        $values[$iso] = $translations[$iso][$form->getName()];
+
+                    if(isset($translations[$iso])){
+                        $values[$iso] =  isset($translations[$iso][$form->getName()]) ? $translations[$iso][$form->getName()] : "";
+
                     }
                 }
                 $form->setData($values);
