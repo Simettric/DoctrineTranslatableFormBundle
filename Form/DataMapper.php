@@ -104,7 +104,7 @@ class DataMapper implements DataMapperInterface{
 
             $options = [
                 "label"   => $iso,
-                "required"=> $iso == $this->required_locale
+                "required"=> ($iso == $this->required_locale && (!isset($options["required"]) || $options["required"] ))
             ];
 
             $field->add($iso, get_class($field->getType()->getParent()->getInnerType()), $options);
