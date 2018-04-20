@@ -1,8 +1,6 @@
 {% use "bootstrap_3_layout.html.twig" %}
 
-
 {% block translatable_text_row %}
-
     {{ form_label(form) }}
     <ul class="nav nav-tabs">
         {% for locale,child in form %}
@@ -20,8 +18,6 @@
         </div>
     {% endfor %}
     </div>
-
-
 {% endblock %}
 
 {% block translatable_textarea_row %}
@@ -42,6 +38,4 @@
             </div>
         {% endfor %}
     </div>
-
-
 {% endblock %}

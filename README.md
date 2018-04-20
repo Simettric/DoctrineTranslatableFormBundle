@@ -2,7 +2,6 @@
 
 The goal of this Symfony Bundle is simplify the creation of translatable forms using Gedmo Doctrine Extensions and StofDoctrineExtensionsBundle.
 
-
 Installation
 ============
 
@@ -53,6 +52,7 @@ Configuration
 
 You must to activate the persist_default_translation key in your stof_doctrine_extensions configuration options
 
+```yaml
     #app/config/config.yml
     stof_doctrine_extensions:
         default_locale: %locale%
@@ -61,8 +61,8 @@ You must to activate the persist_default_translation key in your stof_doctrine_e
         orm:
             default:
                 translatable: true
-                
-                
+```
+
 Configure the view
 ===================
 
@@ -71,13 +71,14 @@ This bundle implements the **Bootstrap Tabs component** in order to show the dif
 If you want to use it, just add the template in the form_themes section in your Twig configuration. 
 Obviously, the bootstrap assets must be loaded in your layout.
 
+```yaml
     # app/config/config.yml
     twig:
         ...
         form_themes:
             - 'SimettricDoctrineTranslatableFormBundle:Form:fields.html.twig'
-                
-                
+```
+
 Creating your forms
 ===================
 
@@ -88,51 +89,44 @@ This is a simple example showing how you can code your translatable forms
 
 namespace AppBundle\Form;
 
-
 use Simettric\DoctrineTranslatableFormBundle\Form\AbstractTranslatableType;
 use Simettric\DoctrineTranslatableFormBundle\Form\TranslatableTextType;
 
 class CategoryType extends AbstractTranslatableType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         // you can add the translatable fields
         $this->createTranslatableMapper($builder, $options)
-             ->add("name", TranslatableTextType::class)
-             ->add("description", TranslatableTextareaType::class)
+             ->add('name', TranslatableTextType::class)
+             ->add('description', TranslatableTextareaType::class)
         ;
 
         // and then you can add the rest of the fields using the standard way
-        $builder->add('enabled')
-        ;
-
+        $builder->add('enabled');
     }
-    
+
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-
         $resolver->setDefaults(array(
             'data_class'   => 'AppBundle\Entity\Category'
         ));
 
         // this is required
         $this->configureTranslationOptions($resolver);
-
     }
 }
-
 ```
 
 Then you need to declare your form type as a service
 
+```yaml
     #app/config/services.yml
     
     parameters:
@@ -148,49 +142,49 @@ Then you need to declare your form type as a service
                 - [ setLocales, [%locales%] ]
             tags:
                 - { name: form.type }
-                
-                
+```
+
 And now you can work in your controller as if you worked with normal entities 
 
+```php
     $category = new Category();
-    
+
     $form = $this->createForm(CategoryType::class, $category);
     
-    if($request->getMethod() == "POST"){
-    
+    if ('POST' === $request->getMethod()) {
         $form->handleRequest($request);
-        
-        if($form->isValid()){
-        
+
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            
+
             $em->persist($category);
             $em->flush();
-        
         }
     }
-    
-    
+```
+
 You can set your own Repository defining a new custom mapping service. 
 This is useful for instance when you have a [Personal Translation](https://github.com/Atlantic18/DoctrineExtensions/blob/v2.4.x/doc/translatable.md#personal-translations) mapping configuration using a specific translation repository
- 
+
+```yaml
     services:
         app.my_custom_mapper:
-            class:     Simettric\DoctrineTranslatableFormBundle\Form\DataMapper
-            arguments: ["@doctrine.orm.entity_manager", "AppBundle\Repository\PostTranslationRepository"]
-            
+            class: Simettric\DoctrineTranslatableFormBundle\Form\DataMapper
+            arguments: ['@doctrine.orm.entity_manager', AppBundle\Repository\PostTranslationRepository]
+
         app.form.post_type:
             class: AppBundle\Form\PostType
-            arguments: ["@app.my_custom_mapper"]
+            arguments: ['@app.my_custom_mapper']
             calls:
-                - [ setRequiredLocale, [%locale%] ]
-                - [ setLocales, [%locales%] ]
+                - [ setRequiredLocale, ['%locale%'] ]
+                - [ setLocales, ['%locales%'] ]
             tags:
                 - { name: form.type }
-    
+```
 
 If you have configured the Bootstrap Tabs theme in your Twig configuration, you can show your fields with the Boo in the templates with the form_row tag
 
+```twig
     <div class="form-group">
         {{ form_row(form.name, {label: "name"|trans}) }}
     </div>
@@ -198,6 +192,4 @@ If you have configured the Bootstrap Tabs theme in your Twig configuration, you 
     <div class="form-group">
         {{ form_row(form.description, {label: "description"|trans}) }}
     </div>
-
-
-            
+```
