@@ -1,21 +1,27 @@
 {
     "name": "simettric/doctrine-translatable-form-bundle",
     "license": "MIT",
+    "type": "symfony-bundle",
     "authors": [
         {
             "name": "Asier Marqués",
             "email": "asiermarques@gmail.com"
         }
     ],
-    "type": "symfony-bundle",
     "autoload": {
         "psr-4": {
-            "Simettric\\DoctrineTranslatableFormBundle\\": ""
+            "Simettric\\DoctrineTranslatableFormBundle\\": "src/"
         }
     },
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "~2.8|~3.1",
-        "stof/doctrine-extensions-bundle": "^1.2"
+        "symfony/config": "^2.8|^3.1|^4.0",
+        "symfony/dependency-injection": "^2.8|^3.1|^4.0",
+        "symfony/form": "^2.8|^3.1|^4.0",
+        "symfony/http-kernel": "^2.8|^3.1|^4.0",
+        "symfony/options-resolver": "^2.8|^3.1|^4.0",
+        "symfony/property-access": "^2.8|^3.1|^4.0",
+        "gedmo/doctrine-extensions": "^2.4",
+        "doctrine/orm": "^2.5"
     }
 }
