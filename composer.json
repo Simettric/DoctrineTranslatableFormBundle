@@ -21,7 +21,6 @@
         "symfony/http-kernel": "^2.8|^3.1|^4.0",
         "symfony/options-resolver": "^2.8|^3.1|^4.0",
         "symfony/property-access": "^2.8|^3.1|^4.0",
-        "symfony/yaml": "^2.8|^3.1|^4.0",
         "gedmo/doctrine-extensions": "^2.4",
         "doctrine/orm": "^2.5"
     }
